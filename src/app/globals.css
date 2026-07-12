@@ -1,53 +1,169 @@
 @import "tailwindcss";
 
+/*
+@font-face {
+  font-family: "Diggy";
+  src: url("/fonts/DiggyLessard-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+*/
+
 :root {
-  --background: #080808;
-  --foreground: #f5f1e8;
+  --background: #000000;
+  --foreground: #ffffff;
+  --diggy-purple: #6838f0;
+  --font-display: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 * {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }
 
 a {
+  color: inherit;
   text-decoration: none;
 }
 
 ::selection {
-  background: rgba(253, 230, 138, 0.28);
-  color: #fff8e6;
+  background: rgba(104, 56, 240, 0.36);
+  color: #ffffff;
 }
 
-.animate-rise {
-  animation: rise 900ms ease both;
+.landing-page {
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #000000;
+  background-image: url("/images/main_background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
+.landing-content {
+  min-height: 100svh;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vh, 6.5rem) 1.25rem clamp(2.5rem, 7vh, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.site-title {
+  width: min(88vw, 600px);
+  margin: 0;
+}
+
+.title-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.link-row {
+  margin-top: clamp(6.5rem, 20vh, 13rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem clamp(1rem, 3vw, 2.6rem);
+  max-width: 100%;
+  color: var(--diggy-purple);
+  font-size: clamp(0.72rem, 1.3vw, 0.95rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+}
+
+.link-row a,
+.link-row .unavailable {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--diggy-purple);
+  text-transform: uppercase;
+}
+
+.link-row a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.24em;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.link-row a:hover {
+  opacity: 0.78;
+  text-decoration-line: underline;
+}
+
+.link-row a:focus-visible,
+.booking-email:focus-visible {
+  outline: 2px solid var(--diggy-purple);
+  outline-offset: 0.35rem;
+}
+
+.unavailable {
+  cursor: default;
+}
+
+.booking-email {
+  margin-top: clamp(1.25rem, 3.2vh, 2.4rem);
+  color: var(--diggy-purple);
+  font-size: clamp(0.82rem, 1.4vw, 1rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.booking-email:hover {
+  opacity: 0.78;
+  text-decoration-line: underline;
+  text-underline-offset: 0.24em;
+}
+
+@media (max-width: 640px) {
+  .landing-content {
+    padding-inline: 1rem;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .site-title {
+    width: min(90vw, 420px);
+  }
+
+  .link-row {
+    margin-top: clamp(5rem, 17vh, 8rem);
+    gap: 0.7rem 1.1rem;
+    letter-spacing: 0.12em;
   }
 }
