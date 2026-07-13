@@ -96,7 +96,7 @@ a {
 .site-title {
   width: min(82vw, 1008px);
   margin: 0;
-  transform: translate(-5vw, 1.2vh);
+  transform: translate(-2.5vw, 1.2vh);
 }
 
 .title-image {
