@@ -70,19 +70,25 @@ a {
   background-size: cover;
 }
 
-.landing-page::before {
+.landing-page::after {
   content: "";
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  height: clamp(5.25rem, 14vh, 8.9rem);
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  bottom: 0;
+  height: 38vh;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.66) 0%,
+    rgba(0, 0, 0, 0.36) 45%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .landing-content {
+  position: relative;
+  z-index: 1;
   min-height: 100svh;
   width: min(100%, 1280px);
   margin: 0 auto;
@@ -107,18 +113,15 @@ a {
 
 .bottom-band {
   position: absolute;
+  z-index: 1;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  min-height: clamp(5.25rem, 14vh, 8.9rem);
   padding: clamp(1.15rem, 2.7vh, 2.1rem) 1rem clamp(1.15rem, 2.7vh, 2.1rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   text-align: center;
 }
 
@@ -254,7 +257,6 @@ a {
   }
 
   .bottom-band {
-    min-height: clamp(5.25rem, 14vh, 8.9rem);
     padding-block: 1.2rem;
   }
 

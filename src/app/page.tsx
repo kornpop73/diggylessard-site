@@ -79,7 +79,7 @@ export default function Home() {
           ))}
         </nav>
 
-        <a className="booking-email" href="mailto:booking@2birds.studio">
+        <a className="booking-email" href="mailto:silvir@2birds.studio">
           booking@2birds.studio
         </a>
       </section>
