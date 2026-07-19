@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const musicLinks = [
   {
@@ -18,10 +18,34 @@ const musicLinks = [
   },
 ];
 
-const videoUrl = "https://www.youtube.com/embed/HJzTCr_bLmk?autoplay=1&rel=0";
-
 export default function Home() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const stopVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, []);
+
+  const closeVideo = useCallback(() => {
+    stopVideo();
+    setIsVideoOpen(false);
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => undefined);
+    }
+  }, [stopVideo]);
+
+  const openVideo = () => {
+    setIsVideoOpen(true);
+
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => undefined);
+    }
+  };
 
   useEffect(() => {
     if (!isVideoOpen) {
@@ -30,18 +54,20 @@ export default function Home() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsVideoOpen(false);
+        closeVideo();
       }
     };
 
     document.body.classList.add("video-open");
     window.addEventListener("keydown", handleKeyDown);
+    videoRef.current?.play().catch(() => undefined);
 
     return () => {
+      stopVideo();
       document.body.classList.remove("video-open");
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isVideoOpen]);
+  }, [closeVideo, isVideoOpen, stopVideo]);
 
   return (
     <main className="landing-page" aria-labelledby="site-title">
@@ -82,7 +108,7 @@ export default function Home() {
           <button
             type="button"
             className="video-link"
-            onClick={() => setIsVideoOpen(true)}
+            onClick={openVideo}
           >
             VIDEO
           </button>
@@ -101,7 +127,7 @@ export default function Home() {
           aria-label="Diggy Lessard video"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
-              setIsVideoOpen(false);
+              closeVideo();
             }
           }}
         >
@@ -109,17 +135,19 @@ export default function Home() {
             type="button"
             className="video-close"
             aria-label="Close video"
-            onClick={() => setIsVideoOpen(false)}
+            onClick={closeVideo}
           >
-            Close
+            ×
           </button>
-          <div className="video-frame-wrap">
-            <iframe
-              className="video-frame"
-              src={videoUrl}
-              title="Diggy Lessard video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
+          <div className="video-player-wrap">
+            <video
+              ref={videoRef}
+              className="video-player"
+              src="/videos/ShowYourTeethVideo.mp4"
+              controls
+              autoPlay
+              playsInline
+              onEnded={closeVideo}
             />
           </div>
         </div>
