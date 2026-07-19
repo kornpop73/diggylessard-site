@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 
 const musicLinks = [
   {
+    label: "APPLE MUSIC",
+    href: "https://music.apple.com/us/artist/diggy-lessard/1322188845",
+  },
+  {
     label: "SPOTIFY",
     href: "https://open.spotify.com/artist/3j5r1ALcWx0V89OSAsqzXP",
   },
   {
-    label: "TIDAL",
-    href: "https://tidal.com/artist/9342774",
-  },
-  {
-    label: "APPLE MUSIC",
-    href: "https://music.apple.com/us/artist/diggy-lessard/1322188845",
+    label: "INSTAGRAM",
+    href: "https://www.instagram.com/diggylessard/",
   },
 ];
 
@@ -48,25 +48,27 @@ export default function Home() {
       <div className="landing-content">
         <h1 id="site-title" className="site-title">
           <Image
-            src="/images/DiggyLessard_Title.png"
+            src="/images/Title_Cropped.png"
             alt="Diggy Lessard"
-            width={926}
-            height={161}
+            width={1490}
+            height={270}
             priority
             className="title-image"
           />
         </h1>
+
+        <Image
+          src="/images/DiggyFrontal.png"
+          alt=""
+          width={1120}
+          height={1093}
+          priority
+          className="portrait-image"
+        />
       </div>
 
       <section className="bottom-band" aria-label="Music, video, and booking">
         <nav className="link-row" aria-label="Music and video links">
-          <button
-            type="button"
-            className="video-link"
-            onClick={() => setIsVideoOpen(true)}
-          >
-            VIDEO
-          </button>
           {musicLinks.map((link) => (
             <a
               key={link.label}
@@ -77,6 +79,13 @@ export default function Home() {
               {link.label}
             </a>
           ))}
+          <button
+            type="button"
+            className="video-link"
+            onClick={() => setIsVideoOpen(true)}
+          >
+            VIDEO
+          </button>
         </nav>
 
         <a className="booking-email" href="mailto:silvir@2birds.studio">
