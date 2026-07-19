@@ -136,9 +136,7 @@ export default function Home() {
             className="video-close"
             aria-label="Close video"
             onClick={closeVideo}
-          >
-            ×
-          </button>
+          />
           <div className="video-player-wrap">
             <video
               ref={videoRef}
