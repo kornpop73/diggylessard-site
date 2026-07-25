@@ -216,9 +216,10 @@ a {
 
 .video-close {
   position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 16px);
-  left: 16px;
-  right: auto;
+  top: 24px;
+  right: 24px;
+  left: auto;
+  transform: none;
   z-index: 10001;
   border: 1px solid rgba(104, 56, 240, 0.7);
   border-radius: 999px;
@@ -301,9 +302,23 @@ a {
   }
 
   .video-close {
+    position: fixed;
     top: calc(env(safe-area-inset-top, 0px) + 16px);
-    left: 16px;
+    left: 80%;
     right: auto;
+    transform: translateX(-50%);
+    z-index: 10001;
     min-height: 2.75rem;
+  }
+}
+
+@media (max-width: 768px), (max-height: 480px) {
+  .video-close {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 16px);
+    left: 80%;
+    right: auto;
+    transform: translateX(-50%);
+    z-index: 10001;
   }
 }
