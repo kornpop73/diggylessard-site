@@ -190,7 +190,7 @@ a {
 .video-overlay {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,10 +215,11 @@ a {
 }
 
 .video-close {
-  position: absolute;
-  top: clamp(1rem, 3vw, 2rem);
-  right: clamp(1rem, 3vw, 2rem);
-  z-index: 1;
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 16px;
+  right: auto;
+  z-index: 10001;
   border: 1px solid rgba(104, 56, 240, 0.7);
   border-radius: 999px;
   width: 2.75rem;
@@ -300,8 +301,9 @@ a {
   }
 
   .video-close {
-    top: calc(0.75rem + env(safe-area-inset-top));
-    right: 0.75rem;
+    top: calc(env(safe-area-inset-top, 0px) + 16px);
+    left: 16px;
+    right: auto;
     min-height: 2.75rem;
   }
 }
