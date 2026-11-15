@@ -1,17 +1,28 @@
+import { cookies } from "next/headers";
+import { receiptCookie, validReceipt } from "@/lib/nfc-song";
+import SongDownload from "./song-download";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { validToken } from "@/lib/nfc-core";
+import { storageDescription, tagStatus } from "@/lib/nfc-db";
+import ContactForm from "./contact-form";
 import styles from "../nfc.module.css";
+
+export const dynamic = "force-dynamic";
 
 export default async function TagPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  if (!/^[a-f0-9]{64}$/.test(token)) notFound();
-
-  return <>
+  if (!validToken(token)) notFound();
+  let status;
+  try { status = await tagStatus(token); } catch { status = "unavailable"; }
+  const entitled = status === "submitted" && validReceipt(token,(await cookies()).get(receiptCookie(token))?.value);
+  return <div className={entitled ? styles.downloadPreview : undefined}>
     <h1>You made it.</h1>
-    <p>Your NFC link opened the Diggy Lessard pilot page.</p>
-    <p>Tag token:</p>
-    <p className={styles.token}>{token}</p>
-    <p className={styles.note}>This confirms the link opened. Tag registration, fan accounts, and music downloads come later.</p>
-    <Link href="/">Visit Diggy’s website</Link>
-  </>;
+    {entitled ? <SongDownload token={token} /> : status === "new" ? <><p>Stay in touch with Diggy.</p><ContactForm token={token} storage={storageDescription()} /></> :
+      status === "inactive" ? <p>This tag is inactive. Please contact Diggy’s team.</p> :
+      status === "submitted" ? <p>Details have already been submitted for this tag. They can’t be viewed or replaced here.</p> :
+      status === "unregistered" ? <p>Your NFC link works. This tag is not ready for signup yet; ask Diggy’s team to register its existing link.</p> :
+      <p>Signup is temporarily unavailable. Please try again later.</p>}
+    {!entitled && <Link className={styles.actionButton} href="/">Visit Diggy’s website</Link>}
+  </div>;
 }

@@ -6,20 +6,33 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:nfc": "node --test tests/nfc.test.mjs tests/admin-auth.test.mjs",
+    "nfc:local": "node scripts/local-nfc.mjs",
+    "db:migrate": "node scripts/migrate-nfc.mjs",
+    "auth:schema": "node scripts/generate-admin-schema.mjs"
   },
   "dependencies": {
-    "next": "16.2.6",
+    "@neondatabase/serverless": "^1.2.1",
+    "@vercel/blob": "^2.4.0",
+    "better-auth": "^1.7.25",
+    "kysely": "^0.28.20",
+    "next": "^16.4.6",
+    "pg": "^8.23.1",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.16",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "^16.4.6",
+    "kysely-pglite": "^0.6.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

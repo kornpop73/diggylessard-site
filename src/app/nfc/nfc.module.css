@@ -2,10 +2,84 @@
 .card { width: min(100%, 38rem); line-height: 1.6; }
 .card h1 { font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.1; }
 .eyebrow { color: #b39aff; letter-spacing: .12em; font-size: .75rem; }
-.card button { background: #6838f0; color: white; border: 0; border-radius: .4rem; padding: .8rem 1.1rem; cursor: pointer; min-height: 44px; }
+.card button, .actionButton { background: #6838f0; color: white; border: 0; border-radius: .4rem; padding: .8rem 1.1rem; cursor: pointer; min-height: 44px; }
 .card button:focus-visible, .card input:focus-visible, .card a:focus-visible { outline: 2px solid #b39aff; outline-offset: 4px; }
 .card input { width: 100%; padding: .8rem; background: #222; color: white; border: 1px solid #777; border-radius: .4rem; margin: .5rem 0 1rem; font: inherit; }
 .actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
 .card a { text-decoration: underline; text-underline-offset: .2em; }
 .token { overflow-wrap: anywhere; color: #b39aff; }
 .note { color: #bbb; font-size: .9rem; }
+.card button:disabled { opacity: .55; cursor: wait; }
+.tableWrap { overflow-x: auto; margin: 2rem 0; }
+.tableWrap table { border-collapse: collapse; font-size: .8rem; width: 100%; }
+.tableWrap th, .tableWrap td { text-align: left; padding: .6rem; border-bottom: 1px solid #444; overflow-wrap: anywhere; min-width: 9rem; }
+.tableWrap caption { text-align: left; margin-bottom: .8rem; }
+
+.card a.actionButton { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font: inherit; }
+
+.dashboardActions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+.dashboardActions > .actionButton { flex: 1 1 10rem; min-height: 3.4rem; text-align: center; display: inline-flex; align-items: center; justify-content: center; line-height: 1.35; }
+
+.card button.inlineValue { background: transparent; color: inherit; border-radius: 0; padding: .25rem 0; text-align: left; overflow-wrap: anywhere; }
+.card button.inlineValue:hover { text-decoration: underline; text-underline-offset: .2em; }
+
+/* Management gets a wider workspace; fan signup stays compact. */
+.card:has(.management) { width: min(100%, 90rem); }
+.management .tableWrap table { table-layout: fixed; }
+.management .tableWrap th, .management .tableWrap td { min-width: 0; vertical-align: top; }
+.management th:nth-child(1) { width: 16%; }
+.management th:nth-child(2) { width: 24%; }
+.management th:nth-child(3) { width: 16%; }
+.management th:nth-child(4) { width: 9%; }
+.management th:nth-child(5) { width: 22%; }
+.management th:nth-child(6) { width: 13%; }
+.management .inlineValue { max-width: 100%; white-space: normal; }
+.management input { min-width: 0; }
+@media (max-width: 700px) {
+  .management .tableWrap { overflow: visible; }
+  .management table, .management tbody, .management caption { display: block; }
+  .management thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .management .tableWrap tr { display: block; margin-bottom: 1rem; padding: .5rem; border: 1px solid #444; border-radius: .5rem; }
+  .management .tableWrap td { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: .5rem; align-items: start; }
+  .management td::before { content: attr(data-label); color: #bbb; padding-top: .25rem; }
+  .management td:last-child { display: block; border-bottom: 0; }
+  .management td:last-child::before { display: block; margin-bottom: .5rem; }
+}
+
+.card:has(.dashboardWide) { width: min(100%, 90rem); }
+.filters { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+.card .filters button { background: #6838f0; border: 2px solid transparent; }
+.card .filters button[aria-pressed="true"] { background: #6838f0; border-color: #ffffff; }
+@media (max-width: 700px) { .filters > button { flex: 1 1 100%; } }
+
+.page:has(.management) { align-items: start; padding-top: clamp(2rem, 5vh, 4rem); }
+
+.management th:nth-child(1) { width: 13%; }
+.management th:nth-child(2) { width: 21%; }
+.management th:nth-child(3) { width: 13%; }
+.management th:nth-child(4) { width: 9%; }
+.management th:nth-child(5) { width: 13%; }
+.management th:nth-child(6) { width: 20%; }
+.management th:nth-child(7) { width: 11%; }
+
+.management .accountTable th:nth-child(1) { width: 70%; }
+.management .accountTable th:nth-child(2) { width: 30%; }
+.management .accountTable th, .management .accountTable td { text-align: left; vertical-align: middle; padding: .85rem .6rem; }
+
+.accountSectionTitle { font-size: 1.5rem; font-weight: 600; line-height: 1.25; margin: 2rem 0 1rem; }
+
+.adminHeader { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.adminHeader h1 { margin-bottom:0.35rem; }
+.adminHeader p { margin:0; }
+
+.card:has(.signIn) > .eyebrow { display: none; }
+.signIn { text-align: center; }
+.signIn h1 { margin: 0 0 2.5rem; text-wrap: balance; overflow-wrap: break-word; }
+.signIn .actions { justify-content: center; }
+.signIn button { width: min(100%, 20rem); min-height: 3.75rem; padding: 1rem 1.5rem; font: inherit; font-size: 1.1rem; }
+
+.songPlayer audio { display:block; width:100%; max-width:32rem; margin:1.5rem 0; }
+
+.downloadPreview > p { margin-top:1.5rem; }
+
+.card:has(.downloadPreview) > .eyebrow { display:none; }

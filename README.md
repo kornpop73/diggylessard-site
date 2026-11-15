@@ -168,15 +168,17 @@ Potential future additions include:
 
 Any future additions should preserve the site's clean, cinematic aesthetic.
 
-# NFC pilot
 
-Roadmap: https://github.com/users/kornpop73/projects/2
+## Diggy Dash and fan downloads
 
-- Open `/nfc/generate`, generate a unique link, and copy it into your phone NFC-writing app as a URL record.
-- Each link uses the shared `/nfc/[token]` page and displays its own random token.
-- Links use the current browser origin. For physical tags, use a stable HTTPS address accessible from the test phone; localhost links cannot be opened on another device. A changed preview address requires rewriting the tag.
-- Links are not persisted or registered in this pilot. Save each generated link before generating another. Any correctly shaped token opens the pilot page; this is not proof of registration, ownership, or a physical NFC tap.
-- No signup, login, claim, fan data collection, or downloads are implemented. These are deferred roadmap items.
-- Keep the cinematic homepage unchanged. The existing Vercel integration deploys `main` to https://diggylessard-site.vercel.app; the live generator is at https://diggylessard-site.vercel.app/nfc/generate.
+- Admin sign-in: `/nfc/admin/sign-in`. Google accounts require verified email plus current membership in `nfc_admin_access`. Every admin has equal access; the final admin cannot be removed. Account removal revokes existing sessions. Password and public registration endpoints are disabled.
+- Dashboard: `/nfc/admin`. Create unique registered tag links, copy them, and explicitly mark physical tags Written after writing/testing. Written state is independent of Pending/Active fan signup status.
+- Fans: `/nfc/admin/fans`. Fan sign-up is the default view; Awaiting sign-up contains pending tags. Inline edits require Enter/confirmation. Signup deletion preserves a linked tag; tag deletion applies only to empty tags. The top Add signup row creates manual fan records without a tag (Tag ID None). Duplicate manual additions are rejected; CSV exports fan contacts only. No invitation or marketing email is sent.
+- Music: `/nfc/admin/download`. One shared MP3/WAV up to 25 MB, private Vercel Blob in production; browser uploads go directly to private storage using short-lived admin-authorized tokens, then the server validates and activates the file. Metadata is in private Neon `nfc_song`. Downloads and native audio playback pass through gated streaming endpoints with safe original filenames and byte-range support. Previous private uploaded blobs are retained when replacing the active song.
+- Fan signup at `/nfc/[token]` requires Name/Email, optional Instagram, and records the displayed update disclosure. Success issues a signed HttpOnly 24-hour browser receipt; another browser does not gain download access merely because a tag has a signup. This is contact signup gating, not verified ownership, verified email, or DRM.
 
-Manual check: generate two different links, check Copy (or manually select the field if clipboard access fails), open both and confirm the displayed tokens differ. Then write each URL to a separate tag and tap from a test phone.
+Production uses canonical `https://www.diggylessard.com`; NFC routes on alternate aliases redirect there. Google callback: `/api/nfc/auth/callback/google`. Required production secrets: `DATABASE_URL`, `NFC_AUTH_SECRET`, `NFC_AUTH_BASE_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `BLOB_READ_WRITE_TOKEN`, `NFC_SONG_BLOB_HOST`. Database schemas are `db/nfc.sql` and `db/admin-auth.sql`; private tables enable RLS and revoke PUBLIC access. Credentials never belong in public browser variables.
+
+Local development remains at `http://127.0.0.1:3150`, with isolated ignored PGlite stores and private song storage under `.nfc-local-data/`. Explicit local demo access is restricted to development, loopback Host, a local DB, and no Vercel environment. Google sign-out disables that browser's demo bypass. No local fan/tag data is automatically copied to production. Vercel preview environments fail closed until a separate database/storage setup is configured.
+
+Validation: `npm run lint`, `npm run test:nfc`, `npm run build`.
