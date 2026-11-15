@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-import { receiptCookie, validReceipt } from "@/lib/nfc-song";
 import SongDownload from "./song-download";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -15,12 +13,11 @@ export default async function TagPage({ params }: { params: Promise<{ token: str
   if (!validToken(token)) notFound();
   let status;
   try { status = await tagStatus(token); } catch { status = "unavailable"; }
-  const entitled = status === "submitted" && validReceipt(token,(await cookies()).get(receiptCookie(token))?.value);
+  const entitled = status === "submitted";
   return <div className={entitled ? styles.downloadPreview : undefined}>
     <h1>You made it.</h1>
     {entitled ? <SongDownload token={token} /> : status === "new" ? <><p>Stay in touch with Diggy.</p><ContactForm token={token} storage={storageDescription()} /></> :
       status === "inactive" ? <p>This tag is inactive. Please contact Diggy’s team.</p> :
-      status === "submitted" ? <p>Details have already been submitted for this tag. They can’t be viewed or replaced here.</p> :
       status === "unregistered" ? <p>Your NFC link works. This tag is not ready for signup yet; ask Diggy’s team to register its existing link.</p> :
       <p>Signup is temporarily unavailable. Please try again later.</p>}
     {!entitled && <Link className={styles.actionButton} href="/">Visit Diggy’s website</Link>}

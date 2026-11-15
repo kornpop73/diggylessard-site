@@ -1,10 +1,9 @@
 import "server-only";
-import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import { resolve, join } from "node:path";
 import { get, head } from "@vercel/blob";
 import { database } from "./nfc-db";
-import { tokenHash } from "./nfc-core";
 
 export const MAX_SONG_BYTES = 25 * 1024 * 1024;
 export function localSongEnabled() {
@@ -59,29 +58,6 @@ export async function saveSharedSong(file: File) {
   } finally { await unlink(temporary).catch(()=>{}); }
   return info;
 }
-function secret() {
-  const value = process.env.NFC_AUTH_SECRET;
-  if (!value || value.length < 32) throw new Error("Download receipts are unavailable.");
-  return value;
-}
-export function receiptCookie(token:string) { return "diggy_download_"+tokenHash(token).slice(0,32); }
-export function createReceipt(token:string) {
-  const body = Buffer.from(JSON.stringify({tag:tokenHash(token),expires:Date.now()+24*60*60*1000})).toString("base64url");
-  return body+"."+createHmac("sha256",secret()).update("download:"+body).digest("base64url");
-}
-export function validReceipt(token:string,receipt:string|undefined) {
-  if (!receipt || receipt.length > 1000) return false;
-  try {
-    const [body,signature,...extra] = receipt.split(".");
-    if(extra.length || !body || !signature) return false;
-    const expected = createHmac("sha256",secret()).update("download:"+body).digest();
-    const actual = Buffer.from(signature,"base64url");
-    if(actual.length !== expected.length || !timingSafeEqual(actual,expected)) return false;
-    const payload = JSON.parse(Buffer.from(body,"base64url").toString());
-    return payload.tag === tokenHash(token) && typeof payload.expires === "number" && payload.expires > Date.now();
-  } catch { return false; }
-}
-
 export function songFilename(info: SongInfo) {
   const basename = info.name.split(/[\\/]/).pop() || "Song";
   const stem = basename.replace(/[\u0000-\u001f\u007f]/g, "").replace(/\.(mp3|wav)$/i, "").trim().slice(0,160) || "Song";
