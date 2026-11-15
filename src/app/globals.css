@@ -322,3 +322,6 @@ a {
     z-index: 10001;
   }
 }
+
+.privacy-link { margin-top:.65rem; font-size:.75rem; color:var(--diggy-purple); }
+.privacy-link a { text-decoration:underline; text-underline-offset:.2em; }

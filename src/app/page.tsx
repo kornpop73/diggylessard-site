@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const musicLinks = [
@@ -117,6 +118,7 @@ export default function Home() {
         <a className="booking-email" href="mailto:silvir@2birds.studio">
           silvir@2birds.studio
         </a>
+        <p className="privacy-link"><Link href="/privacy">Privacy</Link></p>
       </section>
 
       {isVideoOpen ? (
