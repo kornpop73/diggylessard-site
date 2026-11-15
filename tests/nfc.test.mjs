@@ -65,3 +65,13 @@ test("fan CSV contains only fan submissions and four human-facing columns", () =
   assert.ok(lines[1].startsWith('\"\'=unsafe\"'));
   assert.ok(!csv.includes("tag_id") && !csv.includes("Pending"));
 });
+
+
+test("tag status distinguishes creation, physical writing, fan signup and manual records", async () => {
+  const { tagStatusLabel } = await import("../src/lib/nfc-tag-status.ts");
+  assert.equal(tagStatusLabel({tagId:"tag",fanId:null,writtenAt:null}),"Created");
+  assert.equal(tagStatusLabel({tagId:"tag",fanId:null,writtenAt:"2026-11-15T12:00:00Z"}),"Pending");
+  assert.equal(tagStatusLabel({tagId:"tag",fanId:"fan",writtenAt:null}),"Active");
+  assert.equal(tagStatusLabel({tagId:"tag",fanId:"fan",writtenAt:"2026-11-15T12:00:00Z"}),"Active");
+  assert.equal(tagStatusLabel({tagId:null,fanId:"manual-fan",writtenAt:null}),"No tag");
+});

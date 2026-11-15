@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { tagStatusLabel } from "@/lib/nfc-tag-status";
 import DeleteTag from "./delete-tag";
 import DeleteSignup from "./delete-signup";
 import styles from "../nfc.module.css";
@@ -44,7 +45,7 @@ export default function FanRow({ row }: { row: { tagId: string | null; fanId: st
         <input ref={input} aria-label={labels[field]} type={field === "email" ? "email" : "text"} value={draft} onChange={event=>setDraft(event.target.value)} enterKeyHint="done" aria-describedby={`edit-hint-${row.fanId || row.tagId}`} maxLength={field === "name" ? 100 : field === "email" ? 254 : 31} required={field !== "instagram"} disabled={pending} onKeyDown={event=>{ if (event.key === "Escape") { event.preventDefault(); cancel(); } }} />
       </form> : <button ref={element=>{ triggers.current[field] = element; }} className={styles.inlineValue} type="button" onClick={()=>begin(field)} aria-label={`Change ${labels[field].toLowerCase()}: ${row[field] || "not set"}`}>{field === "instagram" && row[field] ? `@${row[field]}` : row[field] || `Add ${labels[field].toLowerCase()}`}</button>}
     </td>)}
-    <td data-label="Status">{row.email ? "Active" : "Pending"}</td>
+    <td data-label="Tag status">{tagStatusLabel(row)}</td>
     <td data-label="Sign-up date">{row.submittedAt ? new Date(row.submittedAt).toLocaleString("en-US", {timeZone:"America/New_York",dateStyle:"medium",timeStyle:"short"}) : "Pending"}</td>
     <td data-label="Tag ID">{row.tagId || "None"}{row.tagId && <div className={styles.note}>{row.writtenAt ? "Written" : "Not written"}</div>}</td>
     <td data-label="Actions">{editing && <p id={`edit-hint-${row.fanId || row.tagId}`} className={styles.note}>Enter to review · Escape to discard</p>}<p role="status" aria-live="polite">{message}</p>{row.email ? <DeleteSignup tagId={row.tagId} fanId={row.fanId} /> : <DeleteTag tagId={row.tagId!} />}</td>

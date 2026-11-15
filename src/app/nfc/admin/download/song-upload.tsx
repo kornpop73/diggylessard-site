@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import styles from "../../nfc.module.css";
 import { upload } from "@vercel/blob/client";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -22,6 +24,11 @@ export default function SongUpload({currentName,directUpload=false}:{currentName
   }
   return <form onSubmit={submit}><p>{currentName?`Current song: ${currentName}`:"No song uploaded."}</p>
     <label htmlFor="song">Song (MP3 or WAV, up to 25 MB)</label><input id="song" name="song" type="file" accept=".mp3,.wav,audio/mpeg,audio/wav" required disabled={pending} />
-    <button disabled={pending} type="submit">{pending?"Uploading…":currentName?"Replace song":"Upload song"}</button>{message&&<p role="status">{message}</p>}
+    <div className={styles.dashboardActions}>
+      <Link className={styles.actionButton} href="/nfc/admin">Back to Diggy Dash</Link>
+      <button className={styles.actionButton} disabled={pending} type="submit">{pending?"Uploading…":currentName?"Replace song":"Upload song"}</button>
+      <Link className={styles.actionButton} href="/nfc/admin/download/preview">Preview download page</Link>
+    </div>
+    {message&&<p role="status">{message}</p>}
   </form>;
 }

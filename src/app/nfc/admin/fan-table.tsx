@@ -24,7 +24,7 @@ export default function FanTable({ rows }: { rows: Row[] }) {
     </div>
     <p role="status" aria-live="polite">Showing {visible.length} {visible.length === 1 ? "record" : "records"}.</p>
     <div className={styles.tableWrap}><table><caption>{filters.find(filter=>filter.value===view)?.label}</caption>
-      <thead><tr><th>Name</th><th>Email</th><th>Instagram</th><th>Status</th><th>Sign-up date</th><th>Tag ID</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Name</th><th>Email</th><th>Instagram</th><th>Tag status</th><th>Sign-up date</th><th>Tag ID</th><th>Actions</th></tr></thead>
       <tbody>{view === "signed" && <AddFan />}{visible.map(row => <FanRow key={row.fanId || row.tagId} row={row} />)}</tbody>
     </table>{visible.length === 0 && <p>No records in this view.</p>}</div>
   </>;

@@ -12,10 +12,8 @@ export default async function DownloadManagement() {
   const song=enabled?await sharedSong(false):null;
   return <div className={styles.management}>
     <AdminHeader title="Manage download page" />
-    <Link className={styles.actionButton} href="/nfc/admin">Back to Diggy Dash</Link>
     {enabled ? <><p>One shared song for all NFC tags. Fans can download after signing up.</p>
       <SongUpload currentName={song?.info.name || null} directUpload={!localSongEnabled()} />
-      <p><Link className={styles.actionButton} href="/nfc/admin/download/preview">Preview download page</Link></p>
-    </> : <p>Song uploads and downloads are available in the local test only.</p>}
+    </> : <><p>Song storage is unavailable.</p><Link className={styles.actionButton} href="/nfc/admin">Back to Diggy Dash</Link></>}
   </div>;
 }
