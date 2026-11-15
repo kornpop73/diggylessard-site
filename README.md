@@ -167,3 +167,16 @@ Potential future additions include:
 - Subtle page transitions and animations
 
 Any future additions should preserve the site's clean, cinematic aesthetic.
+
+# NFC pilot
+
+Roadmap: https://github.com/users/kornpop73/projects/2
+
+- Open `/nfc/generate`, generate a unique link, and copy it into your phone NFC-writing app as a URL record.
+- Each link uses the shared `/nfc/[token]` page and displays its own random token.
+- Links use the current browser origin. For physical tags, use a stable HTTPS address accessible from the test phone; localhost links cannot be opened on another device. A changed preview address requires rewriting the tag.
+- Links are not persisted or registered in this pilot. Save each generated link before generating another. Any correctly shaped token opens the pilot page; this is not proof of registration, ownership, or a physical NFC tap.
+- No signup, login, claim, fan data collection, or downloads are implemented. These are deferred roadmap items.
+- Keep the cinematic homepage unchanged. The existing Vercel integration deploys `main` to https://diggylessard-site.vercel.app; the live generator is at https://diggylessard-site.vercel.app/nfc/generate.
+
+Manual check: generate two different links, check Copy (or manually select the field if clipboard access fails), open both and confirm the displayed tokens differ. Then write each URL to a separate tag and tap from a test phone.
