@@ -47,7 +47,7 @@ export default function FanRow({ row }: { row: { tagId: string | null; fanId: st
     </td>)}
     <td data-label="Tag status">{tagStatusLabel(row)}</td>
     <td data-label="Sign-up date">{row.submittedAt ? new Date(row.submittedAt).toLocaleString("en-US", {timeZone:"America/New_York",dateStyle:"medium",timeStyle:"short"}) : "Pending"}</td>
-    <td data-label="Tag ID">{row.tagId || "None"}{row.tagId && <div className={styles.note}>{row.writtenAt ? "Written" : "Not written"}</div>}</td>
+    <td data-label="Tag ID">{row.tagId || "None"}</td>
     <td data-label="Actions">{editing && <p id={`edit-hint-${row.fanId || row.tagId}`} className={styles.note}>Enter to review · Escape to discard</p>}<p role="status" aria-live="polite">{message}</p>{row.email ? <DeleteSignup tagId={row.tagId} fanId={row.fanId} /> : <DeleteTag tagId={row.tagId!} />}</td>
   </tr>;
 }
